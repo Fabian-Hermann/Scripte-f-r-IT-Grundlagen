@@ -97,11 +97,16 @@
 
             $VhdPath = "$vmpfad\Virtual Hard Disks\$vmName.vhdx"
     
-            #VM Switch hinzufügen
-            if (-not $switch -eq ""){
-                New-VM -Name $vmName -MemoryStartupBytes $Ramgroesse -NewVHDPath $VhdPath -SwitchName (Get-VMSwitch -Name $switch).name -Path $vmpfad -Generation 2 -NewVHDSizeBytes $byteGroesse | Out-Null
+           #VM Switch hinzufügen
+            if (-not $null -ne (Get-VHD -Path $VhdPath -ErrorAction SilentlyContinue)){
+                if (-not $switch -eq ""){
+                    New-VM -Name $vmName -MemoryStartupBytes $Ramgroesse -NewVHDPath $VhdPath -SwitchName (Get-VMSwitch -Name $switch).name -Path $vmpfad -Generation 2 -NewVHDSizeBytes $byteGroesse | Out-Null
+                } else {
+                    New-VM -Name $vmName -MemoryStartupBytes $Ramgroesse -NewVHDPath $VhdPath -Path $vmpfad -Generation 2 -NewVHDSizeBytes $byteGroesse | Out-Null
+                }
             } else {
-                New-VM -Name $vmName -MemoryStartupBytes $Ramgroesse -NewVHDPath $VhdPath -Path $vmpfad -Generation 2 -NewVHDSizeBytes $byteGroesse | Out-Null
+                Write-Host "Virtuelle Festplatte existiert bereits! Bitte Löschen" -ForegroundColor Red
+                break
             }
     
             #VM Arbeitsspeicher dynamisch
