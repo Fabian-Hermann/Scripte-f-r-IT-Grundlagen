@@ -68,12 +68,27 @@
     }
 
     #Iso über Dateimanager auswählen
-    Add-Type -AssemblyName System.Windows.Forms
-    $dlg = New-Object System.Windows.Forms.OpenFileDialog
-    $dlg.title = "Bitte wählen Sie die Quell-ISO-Datei aus"
-    $dlg.Filter = "ISO-Dateien (*.iso)|*.iso"
-    $null = $dlg.ShowDialog()
-    $isopfad = $dlg.FileName
+    $Prüfung = $false
+    while (-not $Prüfung){
+        Add-Type -AssemblyName System.Windows.Forms
+        $dlg = New-Object System.Windows.Forms.OpenFileDialog
+        $dlg.title = "Bitte wählen Sie die Quell-ISO-Datei aus"
+        $dlg.Filter = "ISO-Dateien (*.iso)|*.iso"
+        $point = $dlg.ShowDialog()
+        if ($point -eq ([System.Windows.Forms.DialogResult]::Cancel)){
+            Write-Host "Dateiauswahl abgebrochen!" -ForegroundColor Red
+            $answer = Read-Host -Prompt "Vorgang wiederholen?  [Y] Ja ; [N] Nein"
+            $answer = $answer.ToUpper()
+            if ($answer -eq "Y"){
+            } else {
+                Write-Host "Erstellung abgebrochen!" -ForegroundColor Red
+                exit
+            }
+        } else {
+            $Prüfung = $true
+            $isopfad = $dlg.FileName
+        }
+    }
 
     #Speicherpfad festlegen
     $Frage = Read-Host "Standard Speicherort "C:\VMs" verwenden? [Y] Ja ; [N] Nein"
