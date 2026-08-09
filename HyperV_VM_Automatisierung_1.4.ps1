@@ -234,7 +234,7 @@ elseif ( $UserInterfaceInput -eq 8 )
 }
     
 
-} while ( $UserInterfaceInput -ne 10 ) -or ( $UserInterfaceInput -ne 11 )
+} while ( $UserInterfaceInput -ne 10 )
 
 do{
     
