@@ -61,7 +61,7 @@ elseif ( $UserInterfaceInput -eq 2 )
             $i++
         }
 
-        $eingabe = Read-Host -Prompt "Switch-Name oder Nummer eingeben (oder 'cancel' zum Abbrechen)"
+        $eingabe = Read-Host -Prompt "Switch-Name, Nummer eingeben, Leer lassen für keinen Switch oder ('cancel' zum Abbrechen)"
         if ($eingabe -eq "cancel") {
             $switch = $null
             break
