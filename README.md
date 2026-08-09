@@ -1,4 +1,4 @@
-# Scripte-f-r-IT-Grundlagen
+# Scripte-fuer-IT-Grundlagen
 Skripte für IT Grundlagen in Powershell.
 
 Powershellscript for HyperV Usage to deploy Server with one Configuration.
