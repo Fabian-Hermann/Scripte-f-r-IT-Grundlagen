@@ -1,4 +1,37 @@
-﻿
+$hash = "#"
+$divider = ":"
+
+$ServerNameUI = "1: Server Name"
+$prefixDefaultUI = "Server"
+
+$SwitchDefaultUI = "2: Network Adapter"
+$SwitchSetDefaultUI = "No Switch"
+
+$ServerAmountToCreateDefaultUI = "3: Amount to Create"
+$ServerAmountToCreateSetDefaultUI = "1 Server"
+$ServerAmountToCreateSetDefaultAppendUI = "Server"
+
+$RAMSizeDefaultUI = "4: RAM Size"
+$RAMSizeSetDefaultUI = "1"
+$RAMSizeSetDefaultAppendUI = "GB"
+
+$CoreAnzahlDefaultUI = "5: Amount of Cores" 
+$CoreAnzahlSetDefaultUI = "1 Core"
+$CoreAnzahlSetDefaultAppendUI = "Cores"
+
+$BootfilePathDefaultUI = "6: Bootfile"
+$BootfilePathSetDefaultUI = "No Iso Selected"
+$BootfilePathSetUI = "ISO selected"
+
+$SaveLocationPathDefaultUI = "7: Save Location"
+$SaveLocationPathSetDefaultUI = "No Save Location selected"
+$SaveLocationPathDefaultDefaultUI = "Default Path selected"
+$SaveLocationPathNewUI = "New Path selected"
+
+$DriveSizeDefaultUI = "8: Drive Size"
+$DriveSizeSetDefaultUI = "50 GB"
+$DriveSizeDefaultAppendUI = "GB"
+
 $UserInterfaceInput = 1
 
 do
@@ -9,14 +42,160 @@ write-host "###########################################################"
 write-host "#                                                         #"
 write-host "#                        FDCSYS                           #"
 write-host "#                                                         #"
-write-host "#  1: Name                                                #"
-write-host "#  2: Network Adapter                                     #"
-write-host "#  3: Amount                                              #"
-write-host "#  4: RAM Amount                                          #"
-write-host "#  5: Cores                                               #"
-write-host "#  6: Bootfile                                            #"
-write-host "#  7: Save Location                                       #"
-write-host "#  8: Virtual Drive                                       #"
+
+# Server Prefix for the UI
+if ($prefix -eq $null)
+{
+
+  Foreach-object {"{0,-2} {1,-19} {2} {3,-32} #" -f $hash ,$ServerNameUI ,$divider, $prefixDefaultUI}
+
+}
+
+else 
+
+ {
+
+  Foreach-object {"{0,-2} {1,-19} {2} {3,-32} #" -f $hash ,$ServerNameUI ,$divider, $prefix}
+  
+  }
+
+# VM Switch for the UI
+if ($switch -eq $null)
+{
+
+ForEach-Object {"{0,-2} {1,-19} {2} {3,-32} #" -f $hash ,$SwitchDefaultUI, $divider, $SwitchSetDefaultUI}
+
+}
+
+else 
+ 
+ { 
+ 
+ ForEach-Object {"{0,-2} {1,-19} {2} {3,-32} #" -f $hash ,$SwitchDefaultUI, $divider, $switch}
+
+ }
+
+# VMs to Create for the UI
+ if ($anzahl -eq $null)
+ {
+
+ ForEach-Object {"{0,-2} {1,-19} {2} {3,-32} #" -f $hash ,$ServerAmountToCreateDefaultUI, $divider, $ServerAmountToCreateSetDefaultUI}
+
+ }
+
+ else 
+
+  {
+  
+  ForEach-Object {"{0,-2} {1,-19} {2} {3} {4,-32} #" -f $hash ,$ServerAmountToCreateDefaultUI, $divider, $anzahl, $ServerAmountToCreateSetDefaultAppendUI}
+
+  }
+ 
+ # RAM Size for the UI
+ if ($Ramgroesse -eq $null)
+ {
+ 
+ ForEach-Object {"{0,-2} {1,-19} {2} {3} {4,-30} #" -f $hash ,$RAMSizeDefaultUI, $divider, $RAMSizeSetDefaultUI, $RAMSizeSetDefaultAppendUI}
+
+ }
+
+ else 
+ 
+ {
+ 
+ ForEach-Object {"{0,-2} {1,-19} {2} {3} {4,-30} #" -f $hash ,$RAMSizeDefaultUI, $divider, $Ramgroesse, $RAMSizeSetDefaultAppendUI}
+
+ }
+ 
+ # Amount of Cores for the UI
+ if ($CoreAnzahl -eq $null)
+{
+
+ ForEach-Object {"{0,-2} {1,-19} {2} {3,-32} #" -f $hash ,$CoreAnzahlDefaultUI, $divider, $CoreAnzahlSetDefaultUI}
+
+}
+
+else 
+
+ {
+
+ ForEach-Object {"{0,-2} {1,-19} {2} {3} {4,-32} #" -f $hash ,$CoreAnzahlDefaultUI , $divider, $CoreAnzahl, $CoreAnzahlSetDefaultAppendUI }
+
+ }
+
+ # Bootfile Selection for the UI
+ if ($isopfad -eq $null)
+ {
+ 
+ ForEach-Object {"{0,-2} {1,-19} {2} {3,-32} #" -f $hash ,$BootfilePathDefaultUI, $divider, $BootfilePathSetDefaultUI}
+ 
+ }
+
+ elseif ($isofailUI -eq "yes")
+ 
+ {
+ 
+ ForEach-Object {"{0,-2} {1,-19} {2} {3,-32} #" -f $hash ,$BootfilePathDefaultUI, $divider, $BootfilePathSetDefaultUI}
+
+ }
+
+ elseif ($isopfad -ne $null ) 
+ 
+ {
+ 
+ ForEach-Object {"{0,-2} {1,-19} {2} {3,-32} #" -f $hash ,$BootfilePathDefaultUI, $divider, $BootfilePathSetUI}
+ 
+ }
+
+ # Save Location for the UI
+if ($vmpfad -eq $null)
+{
+
+ForEach-Object {"{0,-2} {1,-19} {2} {3,-32} #" -f $hash ,$SaveLocationPathDefaultUI, $divider, $SaveLocationPathSetDefaultUI}
+
+}
+
+elseif ($vmpfad -eq "C:\VMs" )
+
+{
+
+ForEach-Object {"{0,-2} {1,-19} {2} {3,-32} #" -f $hash ,$SaveLocationPathDefaultUI, $divider, $SaveLocationPathDefaultDefaultUI}
+
+}
+
+else
+
+{
+
+ForEach-Object {"{0,-2} {1,-19} {2} {3,-32} #" -f $hash ,$SaveLocationPathDefaultUI, $divider, $SaveLocationPathNewUI}
+
+}
+
+# Virtual Drive Size for the UI
+if ($Speicher -eq 0)
+{
+
+ForEach-Object {"{0,-2} {1,-19} {2} {3,-32} #" -f $hash ,$DriveSizeDefaultUI, $divider, $DriveSizeSetDefaultUI}
+
+}
+
+elseif ($Speicher -lt 100 )
+
+{
+
+ForEach-Object {"{0,-2} {1,-19} {2} {3} {4,-29} #" -f $hash ,$DriveSizeDefaultUI, $divider, $Speicher, $DriveSizeDefaultAppendUI}
+
+}
+
+elseif ($Speicher -ge 100 )
+
+{
+
+ForEach-Object {"{0,-2} {1,-19} {2} {3} {4,-28} #" -f $hash ,$DriveSizeDefaultUI, $divider, $Speicher, $DriveSizeDefaultAppendUI}
+
+}
+
+
 write-host "#  9: Remove                                              #"
 write-host "# 10: Exit and Create                                     #"
 write-host "# 11: Cancel                                              #"
