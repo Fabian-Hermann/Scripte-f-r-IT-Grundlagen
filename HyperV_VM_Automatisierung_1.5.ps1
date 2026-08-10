@@ -25,19 +25,31 @@ write-host "#                                                         #"
 write-host "###########################################################"
 
 $UserInterfaceInput = Read-Host -Prompt 'Enter a Number from 1-11'
+
+
 # ElseIF Clause for the Name of the Server
-if ( $UserInterfaceInput -eq 1 ){ 
-#Namensprefix festlegen
+if ( $UserInterfaceInput -eq 1 )
+
+{ 
+   #Namensprefix festlegen
    $prefix = Read-Host -Prompt "Bitte geben Sie das Namenspräfix ein (z. B. SRV-WIN)"
 
-   if ( $prefix -eq "cancel" ){
+   if ( $prefix -eq "cancel" )
+
+    {
+      
       $prefix = $null
       break
+    
     }
+
+
 }
 
 # ElseIF Clause for the Networkadapter
-elseif ( $UserInterfaceInput -eq 2 ){
+elseif ( $UserInterfaceInput -eq 2 )
+
+{
 # Switch festlegen (integrierte Liste + Nummern-Auswahl)
     $Prüfung = $false
     $switches = Get-VMSwitch
@@ -49,35 +61,32 @@ elseif ( $UserInterfaceInput -eq 2 ){
             $i++
         }
 
-        $eingabe = Read-Host -Prompt "Switch-Name oder Nummer eingeben (oder 'cancel' zum Abbrechen)"
+        $eingabe = Read-Host -Prompt "Switch-Name, Nummer eingeben, Leer lassen für keinen Switch oder ('cancel' zum Abbrechen)"
         if ($eingabe -eq "cancel") {
             $switch = $null
             break
         }
+
         # Wenn numerische Eingabe, Index in Name auflösen
         if ($eingabe.Trim() -match '^\d+$') {
             $idx = [int]$eingabe
             if ($idx -ge 0 -and $idx -lt $switches.Count) {
                 $switch = $switches[$idx].Name
-            } 
-            else {
+            } else {
                 Write-Host "Ungültige Nummer!" -ForegroundColor Red
                 continue
             }
-        } 
-        else {
+        } else {
             $switch = $eingabe.Trim()
         }
 
         if ($switch -ne "") {
             if (-not (Get-VMSwitch -Name $switch -ErrorAction SilentlyContinue)) {
                 Write-Host "Kein Switch gefunden!" -ForegroundColor Red
-            }
-            else {
+            } else {
                 $Prüfung = $true
             }
-        }
-        else {
+        } else {
             # leere Eingabe bedeutet: keinen Switch verwenden 
             $Prüfung = $true
         }
@@ -85,57 +94,75 @@ elseif ( $UserInterfaceInput -eq 2 ){
 }
 
 # ElseIF Clause for the Amount to Create
-elseif ( $UserInterfaceInput -eq 3 ){ 
-#Anzahl Server festlegen
+elseif ( $UserInterfaceInput -eq 3 )
+
+{ 
+
+    #Anzahl Server festlegen
     $Prüfung = $false
     while (-not $Prüfung){
         $eingabe = Read-Host -Prompt "Wie viele VMs sollen erstellt werden?"
         $anzahl = $eingabe -as [Int]
-        if ($eingabe -eq "cancel"){      
-            $anzahl = $null
+       
+        if ( $eingabe -eq "cancel" ){      
+        
+        $anzahl = $null
         break
-        }
+}
         if ($null -ne $anzahl -and $anzahl -gt 0){
             $Prüfung = $true
-        }
-        else {
+        } else {
             Write-Host "Eingabe ungültig!" -ForegroundColor Red
         }
     }
+
 }
 
 # ElseIF Clause for the RAM
-elseif ( $UserInterfaceInput -eq 4 ){
-# Startspeicher RAM festlegen
+elseif ( $UserInterfaceInput -eq 4 )
+
+{
+       # Startspeicher RAM festlegen
     $Prüfung = $false
     while (-not $Prüfung){
         $eingabe = Read-Host -Prompt "Verfügbarer Arbeisspeicher in GB"
         $RAM = $eingabe -as [Int]
-        if ( $eingabe -eq "cancel"){
-            $RAM = $null
-            break
+        if ( $eingabe -eq "cancel") 
+        {
+         
+         $RAM = $null
+         break
+
         }
         if ($null -ne $RAM -and $RAM -gt 0){
             $Ramgroesse = [UInt64]$RAM * 1GB
             $Prüfung = $true
-        }
-        else {
+        } else {
             Write-Host "Eingabe ungültig!" -ForegroundColor Red
         }
     }
+
+
 }
 
 # ElseIF Clause for the Cores
-elseif ( $UserInterfaceInput -eq 5 ){
-# Coreanzahl festlegen
+elseif ( $UserInterfaceInput -eq 5 )
+
+{
+
+     # Coreanzahl festlegen
     $Prüfung = $false
     while (-not $Prüfung){
         $eingabe =  Read-Host -Prompt "Anzahl Kerne"
         $Core = $eingabe -as [Int]
         if ( $eingabe -eq "cancel" ){
+        
         $Core = $null
+        
         break
+
         }
+
         if ($null -ne $Core -and $Core -gt 0){
             $CoreAnzahl = [Int64]$Core
             $Prüfung = $true
@@ -143,11 +170,14 @@ elseif ( $UserInterfaceInput -eq 5 ){
             Write-Host "Eingabe ungültig!" -ForegroundColor Red
         }
     }
+
 }
 
 # ElseIF Clause for the Bootfile
-elseif ( $UserInterfaceInput -eq 6 ){
-#Iso über Dateimanager auswählen
+elseif ( $UserInterfaceInput -eq 6 )
+
+{
+    #Iso über Dateimanager auswählen
     $Prüfung = $false
     while (-not $Prüfung){
         Add-Type -AssemblyName System.Windows.Forms
@@ -160,72 +190,77 @@ elseif ( $UserInterfaceInput -eq 6 ){
             $answer = Read-Host -Prompt "Vorgang wiederholen?  [Y] Ja ; [N] Nein"
             $answer = $answer.ToUpper()
             if ($answer -eq "Y"){
-            }
-            else {
+            } else {
                 Write-Host "Keine Iso hinterlegt!" -ForegroundColor Red
                 $isofail = $true
                 $Prüfung = $true
             }
-        } 
-        else {
+        } else {
             $Prüfung = $true
             $isopfad = $dlg.FileName
         }
     }
-}
 
+
+    }
 # ElseIF Clause for Save Location  
- elseif ( $UserInterfaceInput -eq 7 ){
-#Speicherpfad festlegen
+ elseif ( $UserInterfaceInput -eq 7 )
+{
+ 
+     #Speicherpfad festlegen
     $Frage = Read-Host "Standard Speicherort "C:\VMs" verwenden? [Y] Ja ; [N] Nein"
     $Frage = $Frage.ToUpper()
     if ($Frage -eq "Y"){
         $vmpfad = "C:\VMs"
-    }
-    else {
+        } else {
             $dlc = New-Object System.Windows.Forms.FolderBrowserDialog
             $dlc.description = "Bitte wählen Sie den Zielordner aus"
             $eins = $dlc.ShowDialog()
             $vmpfad = $dlc.selectedPath
-    }
-}   
+        }
+
+
+ 
+ }   
 
 # ElseIF Clause for the Size of the Virtual Drive
-elseif ( $UserInterfaceInput -eq 8 ){
-# Speicherplatz festlegen
+elseif ( $UserInterfaceInput -eq 8 )
+{
+
+    # Speicherplatz festlegen
     $Prüfung = $false
     while (-not $Prüfung){
         $eingabe =  Read-Host -Prompt "Verfügbarer Speicher in GB"
         $Speicher = $eingabe -as [Int]
-        if ( $Speicher -eq "cancel" ){
-            $Speicher = $null
-            break
+        if ( $Speicher -eq "cancel" )
+        {
+        $Speicher = $null
+        break
+        
         }
+
         if ($null -ne $Speicher -and $Speicher -gt 0){
             $byteGroesse = [UInt64]$Speicher * 1GB
             $Prüfung = $true
-        }
-        else {
+        } else {
             Write-Host "Eingabe ungültig!" -ForegroundColor Red
         }
     }
-}   
 
-#While Schleifenbedingung für die Benutzeroberfläche
-while ($UserInterfaceInput -notin @('10', '11')){
-#Cancel prozess
-    if ($UserInterfaceInput -eq '11') {
-        Write-Host "Vorgang abgebrochen." -ForegroundColor Yellow
-        return
-    }
+
 }
     
 
 } while ( $UserInterfaceInput -ne 10 )
 
 do{
-#Erstellungsschleife
-    $counter = 1
+    
+
+   
+
+
+        #Erstellungsschleife
+        $counter = 1
     for ($i = 1; $i -le $anzahl; $i++) {
         while ($null -ne (Get-VM -Name "$($prefix + $counter.ToString("000"))" -ErrorAction SilentlyContinue)){
             $counter++
@@ -265,5 +300,4 @@ do{
 
         $runAgain = Read-Host "Erneut ausführen? [Y] Ja ; [N] Nein"
         $runAgain = $runAgain.ToUpper()    
-}
-while ($runAgain -eq "Y")
+    } while ($runAgain -eq "Y")
