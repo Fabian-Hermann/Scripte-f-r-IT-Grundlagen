@@ -219,6 +219,9 @@ while ($UserInterfaceInput -notin @('10', '11')){
         return
     }
 }
+    
+
+} while ( $UserInterfaceInput -ne 10 )
 
 do{
 #Erstellungsschleife
